@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Eid Mubarak 🌙</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8d08a;
+    --cream: #fdf6e3;
+    --bg: #0b0d14;
+    --text: #f0e6cc;
+    --muted: #8a7f6e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 200;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.4s cubic-bezier(.25,.46,.45,.94);
+    transform: translate(-50%, -50%);
+  }
+
+  /* Stars canvas */
+  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  /* ───── HERO ───── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    padding: 2rem;
+  }
+
+  .moon-wrap {
+    position: relative;
+    width: 120px; height: 120px;
+    margin-bottom: 2.5rem;
+    animation: floatMoon 6s ease-in-out infinite;
+  }
+  @keyframes floatMoon {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-14px); }
+  }
+
+  .moon {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 38%, #f5e6a3, #c9a84c 55%, #7a5c1e);
+    box-shadow:
+      0 0 40px rgba(201,168,76,0.4),
+      0 0 80px rgba(201,168,76,0.15),
+      inset -18px -10px 30px rgba(0,0,0,0.45);
+    position: relative;
+  }
+
+  /* crescent mask */
+  .moon::after {
+    content: '';
+    position: absolute;
+    top: 6%; left: 18%;
+    width: 80%; height: 80%;
+    border-radius: 50%;
+    background: var(--bg);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  .star-small {
+    position: absolute;
+    background: var(--gold-light);
+    border-radius: 50%;
+    animation: twinkle 2s ease-in-out infinite;
+  }
+  .star-small:nth-child(2) { width:5px;height:5px; top:-10px; right:10px; animation-delay:.4s; }
+  .star-small:nth-child(3) { width:3px;height:3px; top:15px; right:-14px; animation-delay:.9s; }
+  .star-small:nth-child(4) { width:4px;height:4px; bottom:-5px; right:-5px; animation-delay:1.4s; }
+
+  @keyframes twinkle {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.3; transform:scale(0.6); }
+  }
+
+  .eid-label {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.3s;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3rem, 10vw, 6.5rem);
+    line-height: 1;
+    text-align: center;
+    letter-spacing: -0.01em;
+    background: linear-gradient(135deg, #e8d08a 0%, #c9a84c 50%, #f5e6a3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.6s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.9s;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 2s;
+  }
+  .scroll-hint span {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100% { transform: scaleY(1); opacity:1; }
+    50% { transform: scaleY(0.5); opacity:0.4; }
+  }
+
+  /* ───── DIVIDER ───── */
+  .divider {
+    display: flex; align-items: center;
+    gap: 1rem; padding: 0 2rem;
+    max-width: 600px; margin: 0 auto;
+  }
+  .divider-line { flex:1; height:1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent); }
+  .divider-icon { color: var(--gold); font-size: 1.1rem; }
+
+  /* ───── SECTIONS ───── */
+  section {
+    position: relative; z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  /* ───── LETTER ───── */
+  .letter-card {
+    background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(201,168,76,0.02));
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 2px;
+    padding: 3rem 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .letter-card::before {
+    content: '✦';
+    position: absolute;
+    top: 1.2rem; left: 1.5rem;
+    color: rgba(201,168,76,0.2);
+    font-size: 0.8rem;
+  }
+  .letter-card::after {
+    content: '✦';
+    position: absolute;
+    bottom: 1.2rem; right: 1.5rem;
+    color: rgba(201,168,76,0.2);
+    font-size: 0.8rem;
+  }
+
+  .letter-opening {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    color: var(--gold-light);
+    margin-bottom: 1.8rem;
+  }
+
+  .letter-body {
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    line-height: 2;
+    color: rgba(240,230,204,0.8);
+    font-weight: 300;
+  }
+
+  .letter-body p { margin-bottom: 1.2rem; }
+  .letter-body p:last-child { margin-bottom: 0; }
+
+  .letter-sign {
+    margin-top: 2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--gold);
+    text-align: right;
+  }
+
+  /* ───── REASONS ───── */
+  .reasons-grid {
+    display: grid;
+    gap: 1px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .reason-item {
+    background: var(--bg);
+    padding: 1.8rem 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    transition: background 0.3s ease;
+    cursor: default;
+  }
+  .reason-item:hover { background: rgba(201,168,76,0.04); }
+
+  .reason-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: rgba(201,168,76,0.25);
+    line-height: 1;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .reason-text {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(240,230,204,0.75);
+  }
+
+  .reason-text strong {
+    display: block;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+    font-size: 0.95rem;
+  }
+
+  /* ───── WISH ───── */
+  .wish-center {
+    text-align: center;
+  }
+
+  .wish-arabic {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .wish-translation {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    display: block;
+  }
+
+  .wish-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    line-height: 1.7;
+    color: rgba(240,230,204,0.7);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .wish-quote cite {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    font-style: normal;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ───── FOOTER ───── */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 3rem 2rem 4rem;
+    border-top: 1px solid rgba(201,168,76,0.08);
+  }
+  footer p {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: rgba(138,127,110,0.5);
+    text-transform: uppercase;
+  }
+  footer .heart { color: var(--gold); }
+
+  /* ───── ANIMATIONS ───── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ───── ORNAMENT ───── */
+  .ornament {
+    text-align: center;
+    color: rgba(201,168,76,0.3);
+    font-size: 1.2rem;
+    letter-spacing: 0.8rem;
+    padding: 2rem 0;
+  }
+
+  /* Lantern deco */
+  .lanterns {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 2rem;
+    opacity: 0.6;
+  }
+  .lantern {
+    font-size: 2rem;
+    animation: swayLantern 3s ease-in-out infinite;
+  }
+  .lantern:nth-child(2) { animation-delay: 0.5s; animation-duration: 3.8s; }
+  .lantern:nth-child(3) { animation-delay: 1s; }
+  @keyframes swayLantern {
+    0%,100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+  }
+
+  @media (max-width: 600px) {
+    .letter-card { padding: 2rem 1.5rem; }
+    section { padding: 4rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="stars"></canvas>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="moon-wrap">
+    <div class="moon"></div>
+    <div class="star-small"></div>
+    <div class="star-small"></div>
+    <div class="star-small"></div>
+  </div>
+  <span class="eid-label">A gift made just for you</span>
+  <h1 class="hero-title"><em>Eid</em> Mubarak</h1>
+  <p class="hero-sub">from someone who's lucky to call you a friend ✦</p>
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- LETTER -->
+<section class="reveal">
+  <span class="section-label">✦ a little note</span>
+  <div class="letter-card">
+    <p class="letter-opening">Assalamualikum!</p>
+    <div class="letter-body">
+      <p>I asked you that I will not do anything after the one taht you have already recieved. But i decided to make another whole webpage just to say Eid Mubarak again to remind you about your importance and honour? Yeah, that's very me. But honestly — you deserve something more than a text bubble lost in a hundred other notifications.</p>
+      <p>I'm not going to make this weird. You're my friend. One of the realest ones I have. And sometimes that means noticing things about you that I never say out loud — like how effortlessly kind you are, or how the room genuinely feels different when you're in it.</p>
+      <p>I made this again because I wanted you to know, even just for a moment, that someone out here is really glad you exist. Not just as a friend. Just… as you.</p>
+      <p>So — Eid Mubarak. I hope this one is soft and warm and full of everything you quietly deserve. Be always happy.</p>
+    </div>
+    <p class="letter-sign">— your friend, always 🌙</p>
+  </div>
+</section>
+
+<div class="divider reveal">
+  <div class="divider-line"></div>
+  <span class="divider-icon">✦</span>
+  <div class="divider-line"></div>
+</div>
+
+<!-- REASONS -->
+<section class="reveal">
+  <span class="section-label">✦ things I never say, but I know you know.</span>
+  <div class="reasons-grid">
+    <div class="reason-item">
+      <span class="reason-num">01</span>
+      <div class="reason-text">
+        <strong>You're the kind of friend people write about.</strong>
+        The one who actually shows up. Who remembers the small things. That's not common — that's you.Many of the friends came and gone. Many of them were temporary but not you. Sometimes, I know I become rude, sometimes I fight with you because I know I can with you. To whom I give importance I fight. To whom I don't, I just leave. You matter alot to me.
+      </div>
+    </div>
+    <div class="reason-item">
+      <span class="reason-num">02</span>
+      <div class="reason-text">
+        <strong>Your laugh is a whole event.</strong>
+        The real one — not the polite one. When it comes out, everything else stops mattering for a second.
+      </div>
+    </div>
+    <div class="reason-item">
+      <span class="reason-num">03</span>
+      <div class="reason-text">
+        <strong>You make people feel seen without even trying.</strong>
+        You ask the right questions. You actually listen. I don't think you know how rare that is. I only speak to you and my innerself.
+      </div>
+    </div>
+    <div class="reason-item">
+      <span class="reason-num">04</span>
+      <div class="reason-text">
+        <strong>Conversations with you stay with me.</strong>
+        Long after they're over. Something you said, the way you put it — it lingers. In the best way.
+      </div>
+    </div>
+    <div class="reason-item">
+      <span class="reason-num">05</span>
+      <div class="reason-text">
+        <strong>I'm a better person for knowing you.</strong>
+        I don't say that lightly. And I probably won't say it to your face. So — here it is. I will always be there for you. 
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament reveal">· · · ✦ · · ·</div>
+
+<!-- WISH -->
+<section class="reveal">
+  <div class="wish-center">
+    <div class="lanterns">
+      <span class="lantern">🪔</span>
+      <span class="lantern">🌙</span>
+      <span class="lantern">🪔</span>
+    </div>
+    <span class="wish-arabic">عيد مبارك</span>
+    <span class="wish-translation">Eid Mubarak — a blessed celebration</span>
+    <p class="wish-quote">
+      "May the magic of this Eid bring you happiness and may it bless you with the warmth of love and joy."
+      <cite>— for you, this Eid</cite>
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>made with <span class="heart">♥</span> &nbsp;·&nbsp; hosted on github pages &nbsp;·&nbsp; just for you</p>
+</footer>
+
+<script>
+// ── Cursor
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+  setTimeout(() => {
+    ring.style.transform = `translate(${e.clientX - 16}px, ${e.clientY - 16}px)`;
+  }, 80);
+});
+
+// ── Stars
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  initStars();
+}
+
+function initStars() {
+  stars = Array.from({ length: 160 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.2 + 0.2,
+    a: Math.random(),
+    speed: Math.random() * 0.008 + 0.002,
+    phase: Math.random() * Math.PI * 2
+  }));
+}
+
+function drawStars(t) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    const alpha = 0.2 + 0.7 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(232, 208, 138, ${alpha})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+
+resize();
+window.addEventListener('resize', resize);
+requestAnimationFrame(drawStars);
+
+// ── Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
