@@ -6,8 +6,8 @@
 <title>Eid Mubarak 🌙</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet"/>
 <audio id="bgMusic" loop>
-  <source src="audio.mp3" type="audio/mpeg">
-  <source src="audio.ogg" type="audio/ogg">
+  <source src="bg_music.mp3" type="audio/mpeg">
+  <source src="bg_music.ogg" type="audio/ogg">
 </audio>
 
 <style>
@@ -34,12 +34,6 @@
 
   /* ══════════════════════════════════════════
      LOCK SCREEN
-     ─────────────────────────────────────────
-     To change your code:
-     1. Visit https://emn178.github.io/online-tools/sha256
-     2. Type your desired code → copy the hash
-     3. Paste it as ACCESS_HASH in the <script>
-     Default code: EID2025
   ══════════════════════════════════════════ */
   #lockScreen {
     position: fixed;
@@ -59,7 +53,6 @@
     pointer-events: none;
   }
 
-  /* tiny stars inside lock screen */
   #lockStars {
     position: absolute;
     inset: 0;
@@ -177,24 +170,13 @@
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
   }
   .lock-btn:hover { border-color: var(--gold); color: var(--gold-light); background: rgba(201,168,76,0.06); }
   .lock-btn:active { transform: scale(0.98); }
   .lock-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  .adots {
-    display: flex; gap: 8px;
-    justify-content: center;
-    margin-top: 1.6rem;
-  }
-  .adot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    border: 1px solid rgba(201,168,76,0.2);
-    transition: all 0.3s;
-  }
+  .adots { display: flex; gap: 8px; justify-content: center; margin-top: 1.6rem; }
+  .adot { width: 5px; height: 5px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.2); transition: all 0.3s; }
   .adot.used { background: #e05580; border-color: #e05580; }
 
   @keyframes lockShake {
@@ -208,14 +190,11 @@
      START OVERLAY
   ══════════════════════════════════════════ */
   .start-overlay {
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     background: rgba(11,13,20,0.92);
     backdrop-filter: blur(10px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
     z-index: 88888;
     transition: opacity 0.8s ease, visibility 0.8s;
   }
@@ -243,7 +222,6 @@
   }
   .start-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.06); }
 
-  /* Music button */
   .music-control {
     position: fixed; bottom: 30px; right: 30px;
     width: 46px; height: 46px; border-radius: 50%;
@@ -259,14 +237,10 @@
     50%{box-shadow:0 0 0 12px rgba(201,168,76,0);}
   }
 
-  /* Cursor */
   .cursor{width:8px;height:8px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99997;transform:translate(-50%,-50%);}
   .cursor-ring{width:32px;height:32px;border:1px solid rgba(201,168,76,0.4);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99996;transition:transform 0.4s cubic-bezier(.25,.46,.45,.94);transform:translate(-50%,-50%);}
-
-  /* Stars canvas */
   #stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
-  /* Hero */
   .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1;padding:2rem;}
   .moon-wrap{position:relative;width:120px;height:120px;margin-bottom:2.5rem;animation:floatMoon 6s ease-in-out infinite;}
   @keyframes floatMoon{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
@@ -338,9 +312,7 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     🔒 LOCK SCREEN
-══════════════════════════════════════════ -->
+<!-- LOCK SCREEN -->
 <div id="lockScreen">
   <div id="lockStars"></div>
   <div class="lock-moon"></div>
@@ -363,9 +335,7 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     🎵 START OVERLAY (shows after unlock)
-══════════════════════════════════════════ -->
+<!-- START OVERLAY -->
 <div class="start-overlay hidden" id="startOverlay">
   <div class="start-text">A special moment awaits…</div>
   <button class="start-btn" onclick="startExperience()">Click to Begin ✦</button>
@@ -375,9 +345,7 @@
 <div class="cursor-ring" id="cursorRing"></div>
 <canvas id="stars"></canvas>
 
-<!-- ══════════════════════════════════════════
-     MAIN CONTENT
-══════════════════════════════════════════ -->
+<!-- MAIN CONTENT -->
 <div class="hero">
   <div class="moon-wrap">
     <div class="moon"></div>
@@ -480,175 +448,147 @@
 <button class="music-control" id="musicBtn" onclick="toggleMusic()">🎵</button>
 
 <script>
-/* ══════════════════════════════════════════════════════
-   🔒 SET YOUR ACCESS CODE
-   ────────────────────────────────────────────────────
-   Step 1: Go to https://emn178.github.io/online-tools/sha256
-   Step 2: Type your code (e.g. EID2025) → copy the hash
-   Step 3: Replace the string below with your hash
+  // ══════════════════════════════════════════
+  // TO CHANGE THE CODE: just edit the text
+  // inside the quotes on the next line
+  // ══════════════════════════════════════════
+  const ACCESS_CODE = "Bisma#305275";
 
-   ⚠️  The comparison is case-insensitive & trims spaces.
-       So "eid2025", "EID2025", " EID2025 " all match.
+  const MAX_ATTEMPTS = 5;
+  let lockAttempts = 0;
+  let lockBlocked  = false;
 
-   Current default code: EID2025
-══════════════════════════════════════════════════════ */
-const ACCESS_HASH = "b5208f4a2ac559f0dd2e1113c7825915cd9af7658807d0ef3bf55306689ecf40";
-// ↑ This is a placeholder. Replace with your own SHA-256 hash.
+  function checkLock() {
+    if (lockBlocked) return;
+    const val = document.getElementById('lockInput').value.trim();
+    if (!val) return;
 
-const MAX_ATTEMPTS = 5;
-let lockAttempts = 0;
-let lockBlocked  = false;
+    const errEl   = document.getElementById('lockErr');
+    const inputEl = document.getElementById('lockInput');
 
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.toUpperCase().trim()));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
+    if (val === ACCESS_CODE) {
+      // ✅ Correct
+      document.getElementById('lockScreen').classList.add('hidden');
+      document.getElementById('startOverlay').classList.remove('hidden');
+      lockAttempts = 0;
+      resetDots();
+      inputEl.value = '';
+    } else {
+      // ❌ Wrong
+      lockAttempts++;
+      markDot(lockAttempts);
+      inputEl.classList.add('err');
+      inputEl.value = '';
 
-async function checkLock() {
-  if (lockBlocked) return;
-  const val = document.getElementById('lockInput').value;
-  if (!val) return;
+      const left = MAX_ATTEMPTS - lockAttempts;
+      errEl.textContent = left > 0
+        ? `Incorrect code — ${left} attempt${left !== 1 ? 's' : ''} left`
+        : 'Too many attempts — wait 30 seconds';
+      errEl.classList.add('show');
 
-  const hash = await sha256(val);
-  const errEl = document.getElementById('lockErr');
-  const inputEl = document.getElementById('lockInput');
+      const card = document.querySelector('.lock-card');
+      card.classList.remove('lock-shake');
+      void card.offsetWidth;
+      card.classList.add('lock-shake');
+      setTimeout(() => inputEl.classList.remove('err'), 600);
 
-  if (hash === ACCESS_HASH) {
-    // ✅ Correct — fade out lock screen, show music prompt
-    document.getElementById('lockScreen').classList.add('hidden');
-    document.getElementById('startOverlay').classList.remove('hidden');
-    lockAttempts = 0;
-    resetDots();
-    inputEl.value = '';
-  } else {
-    // ❌ Wrong
-    lockAttempts++;
-    markDot(lockAttempts);
-    inputEl.classList.add('err');
-    inputEl.value = '';
-
-    const left = MAX_ATTEMPTS - lockAttempts;
-    errEl.textContent = left > 0
-      ? `Incorrect code — ${left} attempt${left !== 1 ? 's' : ''} left`
-      : 'Too many attempts — wait 30 seconds';
-    errEl.classList.add('show');
-
-    // Shake the card
-    const card = document.querySelector('.lock-card');
-    card.classList.remove('lock-shake');
-    void card.offsetWidth;
-    card.classList.add('lock-shake');
-    setTimeout(() => inputEl.classList.remove('err'), 600);
-
-    if (lockAttempts >= MAX_ATTEMPTS) {
-      lockBlocked = true;
-      document.getElementById('lockBtn').disabled = true;
-      inputEl.disabled = true;
-      setTimeout(() => {
-        lockBlocked = false;
-        lockAttempts = 0;
-        resetDots();
-        inputEl.disabled = false;
-        document.getElementById('lockBtn').disabled = false;
-        errEl.textContent = 'Incorrect code — try again';
-        errEl.classList.remove('show');
-      }, 30000);
+      if (lockAttempts >= MAX_ATTEMPTS) {
+        lockBlocked = true;
+        document.getElementById('lockBtn').disabled = true;
+        inputEl.disabled = true;
+        setTimeout(() => {
+          lockBlocked = false; lockAttempts = 0; resetDots();
+          inputEl.disabled = false;
+          document.getElementById('lockBtn').disabled = false;
+          errEl.textContent = 'Incorrect code — try again';
+          errEl.classList.remove('show');
+        }, 30000);
+      }
     }
   }
-}
 
-function markDot(n) { document.getElementById('ad'+n)?.classList.add('used'); }
-function resetDots() { for(let i=1;i<=5;i++) document.getElementById('ad'+i)?.classList.remove('used'); }
+  function markDot(n) { document.getElementById('ad'+n)?.classList.add('used'); }
+  function resetDots() { for(let i=1;i<=5;i++) document.getElementById('ad'+i)?.classList.remove('used'); }
 
-document.getElementById('lockInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') checkLock();
-});
-
-// Scatter decorative stars in the lock background
-(function() {
-  const c = document.getElementById('lockStars');
-  for (let i = 0; i < 90; i++) {
-    const s = document.createElement('div');
-    s.className = 'lstar';
-    const sz = Math.random() * 2 + 1;
-    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;
-      width:${sz}px;height:${sz}px;
-      animation-delay:${Math.random()*5}s;
-      animation-duration:${2+Math.random()*3}s;`;
-    c.appendChild(s);
-  }
-})();
-
-/* ══════════════════════════════════════════════════════
-   🎵 MUSIC
-══════════════════════════════════════════════════════ */
-const bgMusic = document.getElementById('bgMusic');
-const musicBtn = document.getElementById('musicBtn');
-let isPlaying = false;
-
-function startExperience() {
-  document.getElementById('startOverlay').classList.add('hidden');
-  bgMusic.volume = 0.4;
-  bgMusic.play().then(() => {
-    isPlaying = true;
-    musicBtn.classList.add('playing');
-    musicBtn.innerHTML = '💕';
-  }).catch(() => {});
-}
-
-function toggleMusic() {
-  if (isPlaying) {
-    bgMusic.pause(); isPlaying = false;
-    musicBtn.classList.remove('playing'); musicBtn.innerHTML = '🎵';
-  } else {
-    bgMusic.play(); isPlaying = true;
-    musicBtn.classList.add('playing'); musicBtn.innerHTML = '💕';
-  }
-}
-
-/* ══════════════════════════════════════════════════════
-   CURSOR
-══════════════════════════════════════════════════════ */
-const cursor = document.getElementById('cursor');
-const ring   = document.getElementById('cursorRing');
-document.addEventListener('mousemove', e => {
-  cursor.style.transform = `translate(${e.clientX-4}px,${e.clientY-4}px)`;
-  setTimeout(() => { ring.style.transform = `translate(${e.clientX-16}px,${e.clientY-16}px)`; }, 80);
-});
-
-/* ══════════════════════════════════════════════════════
-   STARS CANVAS
-══════════════════════════════════════════════════════ */
-const canvas = document.getElementById('stars');
-const ctx    = canvas.getContext('2d');
-let stars    = [];
-
-function resize() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; initStars(); }
-function initStars() {
-  stars = Array.from({length:160}, () => ({
-    x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-    r: Math.random()*1.2+0.2, speed: Math.random()*0.008+0.002,
-    phase: Math.random()*Math.PI*2
-  }));
-}
-function drawStars(t) {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  stars.forEach(s => {
-    const a = 0.2 + 0.7*(0.5+0.5*Math.sin(t*s.speed+s.phase));
-    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(232,208,138,${a})`; ctx.fill();
+  document.getElementById('lockInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkLock();
   });
-  requestAnimationFrame(drawStars);
-}
-resize(); window.addEventListener('resize', resize); requestAnimationFrame(drawStars);
 
-/* ══════════════════════════════════════════════════════
-   SCROLL REVEAL
-══════════════════════════════════════════════════════ */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, {threshold:0.12});
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  // Decorative stars on lock screen
+  (function() {
+    const c = document.getElementById('lockStars');
+    for (let i = 0; i < 90; i++) {
+      const s = document.createElement('div');
+      s.className = 'lstar';
+      const sz = Math.random() * 2 + 1;
+      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;
+        width:${sz}px;height:${sz}px;
+        animation-delay:${Math.random()*5}s;
+        animation-duration:${2+Math.random()*3}s;`;
+      c.appendChild(s);
+    }
+  })();
+
+  // ══ MUSIC ══
+  const bgMusic = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('musicBtn');
+  let isPlaying = false;
+
+  function startExperience() {
+    document.getElementById('startOverlay').classList.add('hidden');
+    bgMusic.volume = 0.4;
+    bgMusic.play().then(() => {
+      isPlaying = true;
+      musicBtn.classList.add('playing');
+      musicBtn.innerHTML = '💕';
+    }).catch(() => {});
+  }
+
+  function toggleMusic() {
+    if (isPlaying) {
+      bgMusic.pause(); isPlaying = false;
+      musicBtn.classList.remove('playing'); musicBtn.innerHTML = '🎵';
+    } else {
+      bgMusic.play(); isPlaying = true;
+      musicBtn.classList.add('playing'); musicBtn.innerHTML = '💕';
+    }
+  }
+
+  // ══ CURSOR ══
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.transform = `translate(${e.clientX-4}px,${e.clientY-4}px)`;
+    setTimeout(() => { ring.style.transform = `translate(${e.clientX-16}px,${e.clientY-16}px)`; }, 80);
+  });
+
+  // ══ STARS CANVAS ══
+  const canvas = document.getElementById('stars');
+  const ctx    = canvas.getContext('2d');
+  let stars    = [];
+  function resize() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; initStars(); }
+  function initStars() {
+    stars = Array.from({length:160}, () => ({
+      x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+      r:Math.random()*1.2+0.2, speed:Math.random()*0.008+0.002, phase:Math.random()*Math.PI*2
+    }));
+  }
+  function drawStars(t) {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s => {
+      const a = 0.2+0.7*(0.5+0.5*Math.sin(t*s.speed+s.phase));
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(232,208,138,${a})`; ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  resize(); window.addEventListener('resize', resize); requestAnimationFrame(drawStars);
+
+  // ══ SCROLL REVEAL ══
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
